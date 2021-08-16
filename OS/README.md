@@ -1,12 +1,14 @@
 ***([참고1](https://github.com/WooVictory/Ready-For-Tech-Interview), [참고2](https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/OS), [참고3](https://github.com/pparkcoder/TechnicalNote)을 바탕으로 작성하였으며, 꾸준하게 추가할 예정)***
 
+<br>
+
 ##### 정리 순서
 
 1. 메모리 구조 - **완료**
 2. 프로세스, 스레드 - **완료**
 3. Context Switching - **완료**
-4. CPU 스케줄링 관련 - **진행 중**
-5. 동기화, 비동기화 관련
+4. CPU 스케줄링 관련 - **완료**
+5. 동기화, 비동기화 관련 - **진행 중**
 6. 메모리 관리 (페이징 등)
 7. 메모리 단편화
 8. 캐시
@@ -352,6 +354,10 @@
 
 ### 선점형 스케쥴링
 
+: ***SRTF, Round Robin, Priority Scheduling, Multi-level Queue, Multi-level feedback Queue 등***
+
+<br>
+
 1. SRTF(Shortest Remaining Time First)
    - 특징 
      - 새로운 프로세스가 도착할 때마다 새로운 스케줄링이 이루어짐
@@ -425,4 +431,72 @@
    - 위 그림에서 모든 프로세스는 가장 위의 큐에서 CPU의 점유를 대기. 이 상태로 진행하다가 이 큐에서 기다리는 시간이 너무 오래 걸린다면 **아래의 큐로 프로세스를 옮김**
    - 만약, 우선순위 순으로 큐를 사용하는 상황에서 우선순위가 낮은 아래의 큐에 있는 프로세스에서 starvation 상태가 발생하면 이를 우선순위가 높은 위나 아래의 큐로 옮길 수 있음
 
-6. 
+<br><br>
+
+### 비선점형 스케줄링
+
+: **FCFS(FIFO), SJF, Priority Scheduling 등**
+
+<br>
+
+1. FCFS(First Come First Served) = FIFO(First In First Out)
+
+   - 특징
+     - 가장 간단한 비선점 스케줄링 기법
+     - **Ready Queue에 도착한 순서대로 실행**
+     - 일단 CPU를 할당받으면 CPU 할당 시간이 완료될 때까지 CPU를 반환하지 않으며, 할당되었던 CPU가 반환될 때만 스케줄링이 일어남
+
+   - 장점
+
+     - 구현이 간단
+
+   - 단점
+
+     - Convoy Effect 발생 : 소요 시간이 긴 프로세스가 짧은 프로세스보다 먼저 도착해서 뒤에 프로세스들이 오래 기다려야 하는 현상
+     - 늦게 온 작업에게 불공평 (최악의 경우 : 오래 걸리는 프로세스가 먼저 도착)
+
+   - ![](https://blog.kakaocdn.net/dn/x4n0r/btquuKbpwZF/Hn15OQvNtpmqcLjGhMomPK/img.png)
+
+   - ```
+     Average Waiting Time = 0 + 24 + 27 / 3 = 17msec
+     ```
+
+   - 프로세스가 들어온 순서가 P3, P2, P1 인 경우
+
+   - ```
+     Average Waiting Time = 3 + 6 + 0 / 3 = 3msec
+     ```
+
+   - **즉, 들어온 순서로 수행한다고 해서 반드시 효율적인 것은 아님**
+
+2. SJF(Shortest-Job-First)
+
+   - 특징
+     - 도착 순서와 상관없이, CPU 점유 시간이 가장 짧은 프로세스에 CPU를 먼저 할당
+
+     - **선점, 비선점 모두 가능**
+
+       - 비선점 
+
+       - ![](https://blog.kakaocdn.net/dn/xfVOK/btquwmHrtlS/Mb9stKxMT0HSk3S6cg4xCK/img.png)
+
+       - ```
+         Average Waiting Time = 0 + 3 + 9 + 16 / 4 = 7msec
+         ```
+
+   - 문제점
+
+     - starvation : 점유 시간이 긴 프로세스가 요구 시간이 짧은 프로세스에게 항상 양보되어 점유 시간이 긴 프로세스는 영원히 CPU 할당 불가
+     - 가장 효율적인 CPU 스케줄링 방법 같지만, 매우 **비현실적**. 왜냐하면 컴퓨터 환경에서는 프로세스의 CPU 점유시간을 알 수 없음. 점유 시간을 알려면 실제로 수행하여 측정하는 수 밖에 없지만 이는 오버헤드가 매우 큰 작업
+
+   <br>
+
+   <br>
+
+   # 동기화 문제
+
+   
+
+   
+
+   
