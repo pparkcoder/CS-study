@@ -4,11 +4,11 @@
 
 ##### 정리 순서
 
-1. [메모리 구조](https://github.com/pparkcoder/CS-study/tree/master/OS#%EC%8A%A4%EC%BC%80%EC%A4%84%EB%9F%ACscheduler) - **완료**
-2. [프로세스, 스레드](https://github.com/pparkcoder/CS-study/tree/master/OS#%EC%8A%A4%EC%BC%80%EC%A4%84%EB%9F%ACscheduler) - **완료**
-3. [Context Switching](https://github.com/pparkcoder/CS-study/tree/master/OS#%EC%8A%A4%EC%BC%80%EC%A4%84%EB%9F%ACscheduler) - **완료**
+1. [메모리 구조](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B5%AC%EC%A1%B0) - **완료**
+2. [프로세스, 스레드](https://github.com/pparkcoder/CS-study/tree/master/OS#%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-vs-%EC%8A%A4%EB%A0%88%EB%93%9C) - **완료**
+3. [Context Switching](https://github.com/pparkcoder/CS-study/tree/master/OS#context-switching) - **완료**
 4. [CPU 스케줄링 관련](https://github.com/pparkcoder/CS-study/tree/master/OS#%EC%8A%A4%EC%BC%80%EC%A4%84%EB%9F%ACscheduler) - **완료**
-5. [동기화, 비동기화 관련](https://github.com/pparkcoder/CS-study/tree/master/OS#%EC%8A%A4%EC%BC%80%EC%A4%84%EB%9F%ACscheduler) - **진행 중**
+5. [동기화, 비동기화 관련](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%8F%99%EA%B8%B0%ED%99%94-%EB%AC%B8%EC%A0%9C) - **진행 중**
 6. 메모리 관리 (페이징 등)
 7. 메모리 단편화
 8. 캐시
