@@ -464,7 +464,7 @@
    - 프로세스가 들어온 순서가 P3, P2, P1 인 경우
 
    - ```
-     Average Waiting Time = 3 + 6 + 0 / 3 = 3msec
+     Average Waiting Time = 6 + 3 + 0 / 3 = 3msec
      ```
 
    - **즉, 들어온 순서로 수행한다고 해서 반드시 효율적인 것은 아님**
