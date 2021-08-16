@@ -50,7 +50,7 @@
 - 메모리의 높은 주소 에서 낮은 주소 방향으로 할당
 - 컴파일 시 크기가 결정 됨
 
-
+<br>
 
 #### 힙 과 스택
 
@@ -340,7 +340,7 @@
 
 ***선점형 스케줄링***
 
-***SRTF, Round Robin, Priority Scheduling, SRTF, Multi-level Queue, Multi-level feedback Queue 등***
+***SRTF, Round Robin, Priority Scheduling, Multi-level Queue, Multi-level feedback Queue 등***
 
 <br>
 
@@ -404,11 +404,25 @@
 
      - Aging :  ready queue에서 기다리는 동안 일정 시간이 지나면 우선 순위를 일정량 높여주는 것. 그러면 우선순위가 매우 낮은 프로세스라 하더라도, 기다리는 시간이 길어질수록 우선순위도 계속 높아지므로 수행될 가능성이 커짐
 
-   - ![1](C:\Users\ILIFO-104\Desktop\1.JPG)
+   - ![1](https://blog.kakaocdn.net/dn/cd8NKk/btquvkjkhgj/macQZjvYxlKHc1yMXeCozk/img.png)
 
    - ```
      Average Waiting Time(AWT) : 0 + 6 + 16 + 18 + 1 / 5 = 8.2msec
      ```
 
-4. 
+4. Multi-level Queue(다중 레벨 큐) 스케줄링
 
+   - **Ready Queue를 여러 개로 분할**해 관리하는 스케줄링 방법
+   - 프로세스를 그룹으로 나누어, 각 그룹에 따라 Ready Queue를 여러 개 두며, 각 큐마다 다른 규칙을 지정(우선순위, CPU 할당시간 등)
+   - 프로세스들의 CPU를 기다리기 위해 한 줄로 서는 게 아니라 여러 줄로 섬
+   - ![](https://user-images.githubusercontent.com/34755287/53879673-5e979880-4052-11e9-9f9b-e8bfec7c9be6.png)
+
+5. Multi-level feedback Queue(다중 레벨 피드백 큐) 스케줄링
+
+   - 기본 개념은 Multi-level Queue와 동일하나, 프로세스가 하나의 큐에서 다른 큐로 이동 가능하다는 점이 다름
+   - **큐 사이에도 우선순위를 부여하는 스케줄링 기법**
+   - ![](https://user-images.githubusercontent.com/34755287/53879675-5f302f00-4052-11e9-86a2-c02ee03bac64.png)
+   - 위 그림에서 모든 프로세스는 가장 위의 큐에서 CPU의 점유를 대기. 이 상태로 진행하다가 이 큐에서 기다리는 시간이 너무 오래 걸린다면 **아래의 큐로 프로세스를 옮김**
+   - 만약, 우선순위 순으로 큐를 사용하는 상황에서 우선순위가 낮은 아래의 큐에 있는 프로세스에서 starvation 상태가 발생하면 이를 우선순위가 높은 위나 아래의 큐로 옮길 수 있음
+
+6. 
