@@ -4,11 +4,11 @@
 
 ##### 정리 순서
 
-1. 메모리 구조 - **완료**
-2. 프로세스, 스레드 - **완료**
-3. Context Switching - **완료**
-4. CPU 스케줄링 관련 - **완료**
-5. 동기화, 비동기화 관련 - **진행 중**
+1. [메모리 구조](https://github.com/pparkcoder/CS-study/edit/master/OS#메모리-구조) - **완료**
+2. [프로세스, 스레드](https://github.com/pparkcoder/CS-study/edit/master/OS#프로세스-vs-스레드) - **완료**
+3. [Context Switching](https://github.com/pparkcoder/CS-study/edit/master/OS#Context-Switching) - **완료**
+4. [CPU 스케줄링 관련](https://github.com/pparkcoder/CS-study/edit/master/OS#스케줄러(Scheduler)) - **완료**
+5. [동기화, 비동기화 관련] - **진행 중**
 6. 메모리 관리 (페이징 등)
 7. 메모리 단편화
 8. 캐시
