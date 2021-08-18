@@ -1,4 +1,4 @@
-***([참고1](https://github.com/WooVictory/Ready-For-Tech-Interview), [참고2](https://github.com/JaeYeopHan/Interview_Question_for_Beginner/tree/master/OS), [참고3](https://github.com/pparkcoder/TechnicalNote)을 바탕으로 작성하였으며, 꾸준하게 추가할 예정)***
+***[WooVictory](https://github.com/WooVictory)***,  ***[JaeYeopHan](https://github.com/JaeYeopHan) 의 github을 참고하여 작성하였으며, 꾸준하게 추가할 예정***
 
 <br>
 
