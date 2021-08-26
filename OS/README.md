@@ -11,8 +11,8 @@
 5. [동기화, 비동기화 관련](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%8F%99%EA%B8%B0%EC%99%80-%EB%B9%84%EB%8F%99%EA%B8%B0) - **완료**
 6. [메모리 단편화](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%8B%A8%ED%8E%B8%ED%99%94fragmentation) - **완료**
 7. [가상 메모리](https://github.com/pparkcoder/CS-study/tree/master/OS#%EA%B0%80%EC%83%81-%EB%A9%94%EB%AA%A8%EB%A6%AC) - **완료**
-8. [페이지 교체 알고리즘](https://github.com/pparkcoder/CS-study/tree/master/OS#%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B5%90%EC%B2%B4-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) - **진행 중**
-9. 캐시
+8. [페이지 교체 알고리즘](https://github.com/pparkcoder/CS-study/tree/master/OS#%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B5%90%EC%B2%B4-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) - **완료**
+9. 캐시 - **진행 예정**
 
 <br><br>
 
