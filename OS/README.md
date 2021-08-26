@@ -9,9 +9,9 @@
 3. [Context Switching](https://github.com/pparkcoder/CS-study/tree/master/OS#context-switching) - **완료**
 4. [CPU 스케줄링 관련](https://github.com/pparkcoder/CS-study/tree/master/OS#%EC%8A%A4%EC%BC%80%EC%A4%84%EB%9F%ACscheduler) - **완료**
 5. [동기화, 비동기화 관련](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%8F%99%EA%B8%B0%EC%99%80-%EB%B9%84%EB%8F%99%EA%B8%B0) - **완료**
-6. 메모리 단편화 - **완료**
+6. [메모리 단편화](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%8B%A8%ED%8E%B8%ED%99%94fragmentation) - **완료**
 7. [가상 메모리](https://github.com/pparkcoder/CS-study/tree/master/OS#%EA%B0%80%EC%83%81-%EB%A9%94%EB%AA%A8%EB%A6%AC) - **완료**
-8. 페이지 교체 알고리즘 - **진행 중**
+8. [페이지 교체 알고리즘](https://github.com/pparkcoder/CS-study/tree/master/OS#%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B5%90%EC%B2%B4-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) - **진행 중**
 9. 캐시
 
 <br><br>
@@ -937,9 +937,86 @@ t3 : ***현재 서로 원하는 자원이 상대방에게 할당되어 있어서
 
 1. FIFO (First In First Out) 
 
-- 메모리에 먼저 올라온 페이지를 먼저 내보내는 알고리즘
+- 메모리에 먼저 올라온 페이지를 교체하는 알고리즘
 - 가장 간단한 방법으로, 특히 초기화 코드에서 적절한 방법
 - 연결 리스트 큐로 만들어 구현
 - 단점
   - 페이지의 ***향후 참조 가능성을 고려하지 않고***. 물리적 메모리에 들어온 순서대로 내쫓을 대상을 선정하기 때문에 비효율적인 상황 발생 => 중요한 페이지를 내 보낼 수 있기 때문
   - 페이지 프레임 수가 많으면 페이지 부재가 줄어드는 것이 일반적이지만, **페이지 프레임 수를 증가시켰음에도 페이지 부재가 더 많이 일어나는 현상**이 발생 => **벨 레이디(Belady)의 모순 현상**
+
+![](https://miro.medium.com/max/1050/1*PisBTTZmXb2ZLHix7RdBCQ.png)
+
+-  **총 15개의 페이지 부재 발생**
+
+<br>
+
+2. 최적 페이지 교체 알고리즘 (OPR, Optimal Page Replacement)
+
+- 앞으로 가장 오랫동안 사용하지 않을 페이지를 교체하는 알고리즘
+- ***미래에 어떤 페이지가 어떠한 순서로 참조될지 미리 알고있다는 전제하***에 알고리즘을 운영하므로 현실적으로 구현이 어려움
+- **페이지 부재율이 가장 낮음**
+
+![](https://miro.medium.com/max/1050/1*MHoq4CVbRsKyXwycQanhnA.png)
+
+- **총 9개의 페이지 부재 발생**
+
+<br>
+
+3. LRU 알고리즘 (Least Recently Used)
+
+- 최근에 사용하지 않는 페이지를 교체하는 알고리즘
+- 최근에 사용하지 않았으면, 나중에도 사용되지 않을 것이라는 아이디어
+- OPT의 경우 미래 예측이지만, ***LRU의 경우는 과거를 보고 판단하므로 실질적으로 사용 가능***
+- OPT보다는 페이지 결함이 더 일어날 수 있지만, **실제로 사용할 수 있는 알고리즘에서는 가장 좋은 방법 중 하나**
+- FIFO보다 우수하고, OTP보다는 우수하지 못함
+
+![](https://miro.medium.com/max/1050/1*2KmdY3wX68yaZnF6MwwTqg.png)
+
+- **총 12개의 페이지 부재 발생**
+
+<br>
+
+4. LFU 알고리즘 (Least Frequently Used)
+
+- 참조 횟수(사용 빈도)가 가장 적은 페이지를 교체하는 알고리즘, ***현재까지 참조된 횟수를 카운팅하는 방법***
+- 자주 사용되는 페이지는 참조 횟수가 많다는 아이디어
+- ***만약 교체 대상인 페이지가 여러 개 일 경우, LRU 알고리즘을 따라 가장 최근에 사용하지 않는 페이지를 교체***
+- 단점
+  - 시간에 따른 페이지 참조의 변화를 반영하지 못함. 즉, **프로그램 실행 초기에 많이 사용된 페이지가 그 후로 사용되지 않을 경우에도 프레임을 계속 차지**
+  -  LRU보다 구현이 복잡
+
+![](https://miro.medium.com/max/1050/1*nIY4ek2yu3jsND7na4AF-Q.png)
+
+- **총 11개의 페이지  부재 발생**
+
+<BR>
+
+![](https://miro.medium.com/max/1050/1*mBZHbLoadaZEfTMkbhcJQQ.png)
+
+- 초기에만 쓰인 7이 메모리에 잔존해 낭비가 일어남
+
+<br>
+
+5. MFU 알고리즘 (Most Frequently Used)
+
+- 참조 횟수(사용 빈도)가 가장 많은 페이지를 교체하는 알고리즘, ***현재까지 참조된 횟수를 카운팅하는 방법***
+- 참조 횟수가 적은 페이지가 최근에 사용된 것이므로 앞으로 사용될 가능성이 높다는 아이디어
+- LFU와 반대 
+
+![](https://miro.medium.com/max/1050/1*e5lca52SoQeiDmy4CvykIA.png)
+
+- **총 14개의 페이지 부재 발생**
+
+<br>
+
+6. NRU, NUR 알고리즘 (Not Recently Used, Not Used Recently)
+
+- LRU와 유사한 알고리즘으로, 최근에 사용하지 않는 페이지를 교체하는 알고리즘
+- 최근 사용 여부를 확인하기 위해서 **각 페이지마다 두 개의 비트, 참조 비트와 변형 비트가 사용됨**
+- 참조 비트(Reference Bit)
+  - 페이지가 참조될 때 1
+  - ***페이지가 참조되지 않았을 때 0이 되며 페이지 교체***
+- 변형 비트(Modified Bit, Dirty Bit) : 페이지 내용이 변경되지 않았을 때는 0, 변경되었을 때는 1로 지정
+  - 페이지 내용이 변경되었을 때 1
+  - 페이지 내용이 변경되지 않았을 때 0
+
