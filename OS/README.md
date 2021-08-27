@@ -1,8 +1,8 @@
-***[WooVictory](https://github.com/WooVictory)***,  ***[JaeYeopHan](https://github.com/JaeYeopHan) 의 github을 참고하여 작성하였으며, 꾸준하게 추가할 예정***
+***[WooVictory](https://github.com/WooVictory)***,  ***[JaeYeopHan](https://github.com/JaeYeopHan)님 의 github을 참고하여 작성하였으며, 꾸준하게 추가하며 수정할 예정***
 
 <br>
 
-##### 정리 순서
+##### 순서
 
 1. [메모리 구조](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B5%AC%EC%A1%B0) - **완료**
 2. [프로세스, 스레드](https://github.com/pparkcoder/CS-study/tree/master/OS#%ED%94%84%EB%A1%9C%EC%84%B8%EC%8A%A4-vs-%EC%8A%A4%EB%A0%88%EB%93%9C) - **완료**
@@ -12,7 +12,7 @@
 6. [메모리 단편화](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%8B%A8%ED%8E%B8%ED%99%94fragmentation) - **완료**
 7. [가상 메모리](https://github.com/pparkcoder/CS-study/tree/master/OS#%EA%B0%80%EC%83%81-%EB%A9%94%EB%AA%A8%EB%A6%AC) - **완료**
 8. [페이지 교체 알고리즘](https://github.com/pparkcoder/CS-study/tree/master/OS#%ED%8E%98%EC%9D%B4%EC%A7%80-%EA%B5%90%EC%B2%B4-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98) - **완료**
-9. 캐시 - **진행 중**
+9. [캐시 메모리](https://github.com/pparkcoder/CS-study/tree/master/OS#%EC%BA%90%EC%8B%9C-%EB%A9%94%EB%AA%A8%EB%A6%AC) - **완료**
 
 <br><br>
 
@@ -1026,8 +1026,13 @@ t3 : ***현재 서로 원하는 자원이 상대방에게 할당되어 있어서
 
 # 캐시 메모리
 
+![](https://aidanbae.github.io/code/devops/computer/cpucache/screenshot.png)
+
+<br>
+
 - 주 기억장치와 CPU 사이에 위치하여 자주 사용하는 프로그램과 데이터를 기억
 - 메모리 종류 중 가장 빠른 속도를 가짐
+- ***프로그램을 직접적으로 읽거나 쓸 수 없음***
 - **메인 메모리에서 참조해야 할 데이터가 캐시 메모리에 존재한다면, 캐시 메모리를 참조하여 참조 횟수가 줄어들어 처리속도가 대폭 향상됨**
 - 캐시의 크기는 보통 수십~ 수백 KByte
 - 비쌈
@@ -1044,8 +1049,8 @@ t3 : ***현재 서로 원하는 자원이 상대방에게 할당되어 있어서
 
 - 이 때 적중률(Hit rage)을 극대화 시키기 위해서 사용되는 원리가 **데이터 지역성**이며 지역성은 시간 지역성, 공간 지역성으로 나뉨
 
-  - 시간 지역성 (Temporal Locality) : 최근에 참조된 주소의 내용은 곧 다음에 다시 참조되는 특성 (ex : 반복문의 데이터가 자주 사용되는 것)
-  - 공간 지역성 (Spatial Locality) : 대부분의 실제 프로그램이 참조된 주소와 인접한 주소의 내용이 다시 참조되는 특성 (ex : 배열은 연속적인 특성 때문에 다음 번지가 사용되는 것)
+  - 시간 지역성 (Temporal Locality) : 최근에 참조된 주소의 내용은 곧 다음에 다시 참조되는 특성 (ex : 반복문의 조건 변수)
+  - 공간 지역성 (Spatial Locality) : 대부분의 실제 프로그램이 참조된 주소와 인접한 주소의 내용이 다시 참조되는 특성 (ex : 배열 arr[0], arr[1]처럼 같은 데이터 배열에 연속적으로 접근할 때, 참조된 데이터 근처에 있는 데이터가 잠시 후 사용될 가능성이 높음)
 
   <br>
 
@@ -1082,3 +1087,10 @@ t3 : ***현재 서로 원하는 자원이 상대방에게 할당되어 있어서
 ![](https://upload.wikimedia.org/wikipedia/commons/7/71/Set-Associative_Cache_Snehal_Img.png)
 
 - Direct mapped 과 Fully associative의 장점들을 고려하여 만들어진 방식
+- 메모리 주소에 대응하는 캐시 라인을 여러개 갖춤, 이 캐시 라인의 그룹을 set
+- 캐시 라인의 개수에 따라 n-way Set associative라고 부름
+- 위의 그림에서 메모리 주소에 대응하는 캐시 라인은 2개 이므로 ***2way Set associative***
+- ***Direct mapped에 비해 검색은 오래 걸리지만 저장이 빠르며, Fully associative에 비해 저장이 느리지만 검색이 빠름***
+- 현재 잘 나간다는 CPU 캐시들은 대부분 해당 방식을 취함
+
+[참고사이트1](https://aidanbae.github.io/code/devops/computer/cpucache/), [참고사이트2](https://ezbeat.tistory.com/455)
