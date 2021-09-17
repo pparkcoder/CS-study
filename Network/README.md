@@ -103,7 +103,7 @@
 # HTTPS
 
 - HTTPS는 SSL의 껍질을 덮어쓴 HTTP. 즉 HTTPS는 새로운 애플리케이션 계층의 프로토콜이 아님
-- HTTP 통신하는 소켓 부분을 인터넷 상에서 정보를 암호화 하는**SSL(Secure Socket Layer)**, **TLS(Transport Layer Security)**라는 프로토콜로 대체한 것
+- HTTP 통신하는 소켓 부분을 인터넷 상에서 정보를 암호화 하는**SSL(Secure Socket Layer)**, **TLS(Transport Layer Security)** 라는 프로토콜로 대체한 것
 - HTTP는 원래 TCP와 직접 통신했지만, HTTPS에서 **HTTP는 SSL과 통신하고, SSL이 TCP와 통신 함**
 - SSL을 사용한 HTTPS는 암호화와 증명서, 안전성 보호를 이용할 수 있음
 - HTTPS의 SSL 에서는 ***대칭키 암호화 방식과 공개키 암호화 방식을 혼합한 하이브리드 암호 시스템을 사용***
