@@ -1,7 +1,3 @@
-***[WooVictory](https://github.com/WooVictory)***,  ***[JaeYeopHan](https://github.com/JaeYeopHan)님 의 github을 참고하여 작성하였으며, 꾸준하게 추가하며 수정할 예정***
-
-<br>
-
 ##### 순서
 
 1. [메모리 구조](https://github.com/pparkcoder/CS-study/tree/master/OS#%EB%A9%94%EB%AA%A8%EB%A6%AC-%EA%B5%AC%EC%A1%B0) - **완료**
