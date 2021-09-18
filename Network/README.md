@@ -7,9 +7,9 @@
 5. [TCP](https://github.com/pparkcoder/CS-study/tree/master/Network#TCP) - **완료**
 6. [UDP](https://github.com/pparkcoder/CS-study/tree/master/Network#UDP) - **완료**
 7. [로드 밸런싱](https://github.com/pparkcoder/CS-study/tree/master/Network#%EB%A1%9C%EB%93%9C-%EB%B0%B8%EB%9F%B0%EC%8B%B1) - **완료**
-8. URI, URL, URN - **완료**
-9. 웹의 흐름 - **완료**
-10. 주소창에 naver.com을 치면 일어나는 일 - **진행중**
+8. [URI, URL, URN](https://github.com/pparkcoder/CS-study/tree/master/Network#uri-url-ura) - **완료**
+9. [웹의 흐름](https://github.com/pparkcoder/CS-study/tree/master/Network#%EC%9B%B9-%ED%86%B5%EC%8B%A0%EC%9D%98-%ED%81%B0-%ED%9D%90%EB%A6%84) - **완료**
+10. [주소창에 naver.com을 치면 일어나는 일](https://github.com/pparkcoder/CS-study/tree/master/Network#%EC%A3%BC%EC%86%8C%EC%B0%BD%EC%97%90-navercom%EC%9D%84-%EC%B9%98%EB%A9%B4-%EC%9D%BC%EC%96%B4%EB%82%98%EB%8A%94-%EC%9D%BC) - **완료**
 
 <br>
 
@@ -641,5 +641,62 @@ safefood.com 서버에서 food폴더 안의 salad.png를 요청하는 URL
 
 # 주소창에 naver.com을 치면 일어나는 일
 
+### IP 주소
 
+- 많은 컴퓨터들이 인터넷 상에서 서로를 인식하기 위해 지정받은 식별용 번호
+- 현재는 IPv4(32비트)로 구성되어 있으며, 한번씩은 들어봤을 법한 127.0.0.1 같은 주소를 말함
+- 시간이 갈수록 IPv4 주소의 부족으로 IPv6가 생겼는데, 128비트로 구성되어 있기 때문에 IP 주소가 부족하지 않다는 특징
 
+<BR>
+
+#### 도메인 네임 (Domain Name)
+
+- IP 주소는 12자리의 숫자로 되어 있기 때문에 사람이 외우기 힘들다는 단점
+- 그렇기 때문에 **12자리의 IP주소를 문자로 표현한 주소가 도메인 네임**
+- 도메인 네임은 몇 개의 의미있는 문자들과 .의 조합으로 구성
+- **컴퓨터가 이해할 수 있는 IP 주소로 변환하는 작업이 필요**
+- 이때, **사용할 수 있도록 미리 도메인 네임과 함께 해당하는 IP 주소값을 한 쌍으로 저장하고 있는 데이터베이스를 DNS(Domain Name System)이라고 부름**
+- **도메인 네임으로 입력하면 DNS를 이용해 컴퓨터는 IP 주소를 받아 찾아갈 수 있음**
+
+<BR>
+
+#### 동작 방식
+
+![](https://camo.githubusercontent.com/1d907c5b70e225e976ae41bb729c65e4c7e047a550aea90cd7fc7576aff72f32/68747470733a2f2f74312e6461756d63646e2e6e65742f6366696c652f746973746f72792f393946303939333735433132344232443032)
+
+1. 사용자가 브라우저에 도메인 네임을 입력
+2. 사용자가 입력한 URL 주소 중에서 도메인 네임 부분을 DNS 서버에서 검색하고, DNS 서버에서 해당 도메인 네임에 해당하는 IP 주소를 찾아 사용자가 입력한 URL 정보와 함께 전달
+3. 페이지 URL 정보와 전달받은 IP 주소는 HTTP 프로토콜을 사용하여 HTTP 요청 메세지를 생성하고, 이렇게 생성된 HTTP 요청 메세지는 TCP 프로토콜을 사용하여 인터넷을 거쳐 해당 IP 주소의 컴퓨터로 전송
+4. 이렇게 도착한 HTTP 요청 메세지는 HTTP 프로토콜을 사용하여 웹 페이지 URL 정보로 변환되어 웹 페이지 URL 정보에 해당하는 데이터를 검색
+5. 검색된 웹 페이지 데이터는 또 다시 HTTP 프로토콜을 사용하여 HTTP 응답 메세지를 생성하고, TCP 프로토콜을 사용하여 인터넷을 거쳐 원래 컴퓨터로 전송됨
+6. 도착한 HTTP 응답 메세지는 HTTP 프로토콜을 사용하여 웹 페이지 데이터로 변환되어 웹 브라우저에 의해 출력되어 사용자가 볼 수 있게 됨
+
+<BR>
+
+#### 1. DHCP & ARP
+
+대부분의 가정집에서는 **DHCP**로 인터넷 접속을 하고 있음. DHCP는 Dynamic Host Configuration Protocol의 약자로, 호스트의 IP 주소 및 TCP/IP 설정을 클라이언트에 자동으로 제공하는 프로토콜. 사용자의 PC는 DHCP 서버에서 **사용자 자신의 IP주소, 가장 가까운 라우터의 IP주소, 가장 가까운 DNS서버의 IP주소**를 받음. 이후, ARP 프로토콜을 이용하여 IP 주소를 기반으로 가장 가까운 라우터의 MAC 주소를 알아냄. DHCP는 클라이언트가 인터넷 접속을 시도하면 **IP와 기본 정보를 제공**
+
+![](https://camo.githubusercontent.com/a73920d2cb4265753f0c557225fb233d1710818c60502355a0e0ba92446af6da/68747470733a2f2f74312e6461756d63646e2e6e65742f6366696c652f746973746f72792f323637424343343035383730393134393230)
+
+<BR>
+
+#### 2. IP 정보 수신
+
+위의 과정을 통해 외부와 통신할 준비를 마쳤으므로, DNS Query를 DNS 서버에 전송. DNS 서버는 이에 대한 결과로 웹 서버의 IP 주소를 사용자 PC에 돌려줌. DNS 서버가 도메인에 대한 IP 주소를 송신하는 과정은 약간 복잡
+
+	1. 사용자의 PC는 가장 먼저 지정된 DSN 서버 (우리나라의 경우, 통신사별로 지정된 DNS 서버 존재)에 DNS Query를 송신
+ 	2. 그 후 지정된 dns 서버는 **Root 네임서버**에 www.naver.com을 질의하고, Root 네임서버는 .com 네임서버의 ip 주소를 알려줌
+ 	3. 그 후 **.com 네임서버**에 www.naver.com을 질의하면 naver.com 네임서버의 ip 주소를 받고 그곳에 질의를 또 송신하면 www.naver.com의 ip주소를 수신
+
+이와 같이 여러번 왔다갔다 하는 이유는, 도메인의 계층화 구조에 따라 DNS 서버도 계층화 되어있기 때문. 이렇게 계층화되어 있으므로 도메인의 가장 최상단, 즉 가장 뒷쪽(.com , .kr 등)을 담당하는 DNS 서버는 전세계에 13개 뿐
+
+<BR>
+
+#### 3. 웹 서버 접속
+
+웹 서버의 IP 주소까지 알았다. Http Request를 위해 TCP Socket을 개방하고 연결. 이 과정에서 **3-Way hand shaking**
+
+TCP 연결에 성공하면, Http Request가 TCP Socket을 통해 보내짐. 이에 대한 응답으로 웹 페이지의 정보가 사용자의 PC로 들어옴
+
+[참고](https://sophia2730.tistory.com/entry/DNS-%EC%A3%BC%EC%86%8C%EC%B0%BD%EC%97%90-wwwnavercom%EC%9D%84-%EC%B9%98%EB%A9%B4-%EC%9D%BC%EC%96%B4%EB%82%98%EB%8A%94-%EC%9D%BC)
