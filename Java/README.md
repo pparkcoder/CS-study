@@ -293,7 +293,50 @@ public class Test {
 
 # Garbage Collection
 
+1. stop-the-world
+   - GC를 실행하기 위해 JVM이 애플리케이션 실행을 멈추는 것
+   - **stop-the-world가 발생하면 GC를 실행하는 쓰레드를 제외한 나머지 쓰레드는 모두 작업을 멈춤**
+   - ***어떤 GC 알고리즘을 사용하더라도 stop-the-world 발생***
+   - 대게 GC 튜닝이란 stop-the-world 시간을 줄이는 것
 
+<br>
+
+2. **Minor GC**  
+
+![](https://d2.naver.com/content/images/2015/06/helloworld-1329-3.png)
+
+- 새로 생성된 대부분의 객체는 Eden 영역에 위치
+- **Eden 영역이 꽉 차게 되면 GC 발생**. 그 이후, 살아남은 객체는 Survivor 영역으로 이동
+- 이 과정을 반복하다가 계속해서 살아남은 객체는 일정 시간 참조되고 있다는 뜻이므로 Old 영역으로 이동
+
+<br>
+
+3. **Major GC (Full GC)**
+
+- Old 영역에 있는 모든 객체들을 검사하여 참조되고 있지 않은 객체들을 한꺼번에 삭제
+- 시간이 오래 걸림
+- GC 작업 완료 후, 중단했던 작업을 다시 시작
+
+<BR>
+
+***JVM의 메모리 공간은 매우 많은 객체가 생성되는 Young Generation과 Minor GC가 발생하고도 살아남은 객체가 모이는 Old로 나뉘었고,각 Minor GC와 Major GC가 발생한다.***
+
+<BR>
+
+#### GC는 어떤 원리로 소멸시킬 대상을 선정하는가
+
+![](https://user-images.githubusercontent.com/33534771/83470789-0605b400-a4be-11ea-84e6-6044596242d3.png)
+
+- GC는 힙 내의 객체 중에서 Garbage를 찾아내고, 찾아낸 Garbage를 처리해서 힙의 메모리를 회수
+- **참조되고 있지 않은 객체를 Garbage**라고 하며, 객체가 Garbage인지 아닌지 판단하기 위해서는 **Reachability**라는 개념을 사용
+- 어떤 힙 영역에 할당된 객체가 유효한 참조가 있으면 Reachability, 없다면 UnReachability
+- 하나의 객체는 다른 객체를 참조하고, 다른 객체는 또 다른 객체를 참조할수 있기 때문에 ***참조 사슬이 형성됨***. 이 참조 사슬 중 ***최초의 참조한 것을 Root Set***
+- 유효한 최초의 참조가 이루어지지 않은 객체들은 Unreachable Objects로 판단하며 GC에 의해 수거
+- **빈번한 GC의 실행은 시스템에 부담이 되기 때문에 바로 소멸되는 것은 아님**. 성능에 영향을 미치지 않도록 GC 실행 타이밍은 별도의 알고리즘을 기반으로 계산이 되며, 이 계산 결과를 바탕으로 GC를 수행
+
+[참고1](https://d2.naver.com/helloworld/1329),[참고2](https://velog.io/@agugu95/%EC%9E%90%EB%B0%94-GC-Garbage-Collection)
+
+<BR>
 
 ---------------------------------------------
 
@@ -371,25 +414,22 @@ public class Test {
    - 프로그램의 실행 과정에서 **임시로 할당되었다가 메소드를 빠져나가면 바로 소멸되는 특성의 데이터를 저장하기 위한 영역**
    - 메소드의 매개 변수, 지역 변수 등 메소드의 정보를 저장
 3. Native Method Stack
-   - Java외의 언어로 작성된 네이티브 코드를 위한 여영ㄱ
+   - Java외의 언어로 작성된 네이티브 코드를 위한 영역
    - 바이트 코드가 아닌 **실제 실행할 수 있는 기계어로 작성된 프로그램을 실행시키는 영역**
 4. Method Area (Class Area, Static Area)
    - 클래스 정보를 처음 메모리 공간에 올릴 때, 초기화 되는 대상을 저장하기 위한 메모리 공간
    - **모든 쓰레드가 공유하는 메모리 영역**
    - 클래스, 인터페이스, 메소드, 필드, Static 변수 등의 **바이트 코드를 보관**
    - Runtime Constant Pool 이라는 것이 존재하며, 이는 별도의 관리 영역으로 상수 자료형을 저장하여 참조하고 중복을 막는 역할
-   - Java 7 부터 String Constant Pool은 Heap 영역으로 변경되어 GC의 관리 대상이 되었음
+   - **Java 7** 부터 String Constant Pool은 Heap 영역으로 변경되어 GC의 관리 대상이 되었음 => **모든 문자열도 GC의 대상이 됨**
 
 5. Heap (힙 영역)
 
    - **객체와 배열을 저장하는 가상 메모리 공간**
-
    - **런타임시 동적으로 할당하여 사용하는 영역**
-
    - **GC의 관리 대상에 포함**
-
    - <img src="https://user-images.githubusercontent.com/33534771/83472881-3f8cee00-a4c3-11ea-942c-9b7aa0f4ea04.png" style="zoom:200%;" />
-
+   
      - New/Young 영역
        - Eden : 객체들이 최초로 **생성되는 공간**
        - Survivor : Eden에서 참조되는 객체들이 **저장되는 공간**
@@ -404,7 +444,101 @@ public class Test {
        - Old 영역에서 살아남은 객체가 영원히 남아있는 곳이 아님
        - 이 영역에서 발생하는 GC는 Major GC의 횟수에 포함
 
-     
+<BR>
 
+# Thread
 
+### 멀티 태스킹
+
+- 두 가지 이상의 작업을 동시에 하는 것
+- 실제로는 동시에 처리될 수 있는 프로레스의 개수가 CPU 코어의 개수와 동일한데, 이보다 많은 개수의 프로세스가 존재하기 때문에 모두 함께 동시에 처리될 수 없음
+- ***각 코어들은 아주 짧은 시간 동안 여러 프로세스를 번갈아가며 처리하는 방식을 통해 동시에 동작하는 것처럼 보이게 할 뿐***
+
+<BR>
+
+### 멀티 스레딩
+
+- 하나의 프로세스 안에서 여러 개의 스레드(하나의 작업 단위)가 동시에 작업을 수행하는 것
+
+<BR>
+
+### 스레드 구현 방법
+
+1. Runnable 인터페이스 구현
+
+```java
+public class MyThread implements Runnable{
+    @Override
+    public void run(){
+        //수행 코드
+    }
+}
+
+public static void main(String[] args){
+    Runnable runnable = new MyThread();
+    Thread t = new Thread(runnable, "mythread");
+}
+```
+
+- Runnable 인터페이스를 구현하므로 다른 클래스를 상속받을 수 있음
+- run() 메소드를 오버라이드 하면 됨
+- 다만, start() 메소드가 없기 때문에 Runnable 인터페이스를 구현할 클래스의 객체를 만들어 Thread를 생성할 때, 생성자의 매개변수로 넘겨주고 스레드 객체의 start() 메소드를 수행
+
+<br>
+
+2. Thread 클래스 상속
+
+```java
+public class MyThread extends Thread{
+    public void run(){
+        //수행 코드
+    }
+}
+```
+
+- Thread 클래스를 상속받으면 다른 클래스를 상속받지 못함(**다중 상속 불가능 - Java**)
+- run() 메소드를 직접 구현
+- Thread 클래스를 상속받으면 스레드 클래스의 메소드를 바로 사용할 수 있지만, Runnable 구현의 경우 Thread 클래스의 static 메소드인 currentThread()를 호출해 현재 스레드에 대한 참조를 얻어와야만 호출이 가능
+
+<br>
+
+### 스레드의 실행
+
+- **run() 호출이 아닌 start() 호출로 실행**
+- Java에는 Call Stack이 존재. 이 영역이 실질적인 명령어들을 담고 있는 메모리로, 하나씩 꺼내서 실행시키는 역할
+- 만약 동시에 두 가지 작업을 한다면, 두 개 이상의 Call Stack이 필요. **스레드를 이용한다는 건 JVM이 다수의 Call Stack을 번갈아가며 일처리를 하고 사용자에게는 동시에 작업을 하는 것처럼 보여주는 것**
+
+- 즉, run() 메소드를 이용한다는 것은 Call Stack 하나만 이용하는 것으로 스레드 활용이 아님
+- **start() 메소드를 호출하면 JVM은 알아서 스레드를 위한 콜 스택을 새롭게 만들어주고 context switching을 통해 스레드답게 동작하도록 해줌**
+- start()는 스레드가 작업을 실행하는 데 필요한 Call Stack을 생성한 다음, ***run()을 호출해서 그 Stack 안에 run()을 저장할 수 있도록 해줌***
+
+<BR>
+
+# String
+
+### 생성 방식
+
+1. **new** 연산자를 이용한 방식
+2. 리터럴을 이용한 방식
+
+**new를 통해 String 객체를 생성하면 Heap 영역에 존재**
+
+**리터럴을 이용할 경우, String Constnat Pool 영역에 존재**
+
+```java
+public class StringMemory{
+    public static void main(String[] args){
+        String literal = "money";
+        String obj = new String("money");
+        
+        literal == obj; // false
+        literal.equals(obj); // true
+    }
+}
+```
+
+- == 연산 결과는 false : **== 연산자는 주소값을 비교**하므로, 일반 객체처럼 Heap 영역에 생성된 obj (String 객체)와, String Constant Pool (***Runtime Data Area -> Method Area -> Runtime Constant Pool***)에 저장된 literal의 주소값은 다름
+-  equals() 메소드의 결과는 true : **equals() 메소드는 내용을 비교**하므로, 같은 문자열에 대해서는 true를 반환
+
+[참고](https://sabarada.tistory.com/137)
 
