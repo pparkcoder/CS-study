@@ -44,12 +44,14 @@
    - OS에 따라 자료의 길이가 변하지 않음
    - 비객체 타입이며, **Null을 가질 수 없음**
    - 정수 (byte, short, int, long), 실수 (float, double), 문자 (char), 논리 (boolean)
+   - 복사 시, 별개의 복사본이 생성되며 복사 후 원본과 복사본은 별개의 변수
 
 2. 참조형 (Reference Type)
    - 기본형 8가지를 제외한 자료형
    - 초기화를 하지 않으면 **Null 값이 기본으로 들어감**
    - 메모리 상에서 객체가 존재하는 **주소를 저장하며, Heap 영역에 저장**
    - 스트링형, 클래스형, 인터페이스형, 배열형 존재
+   - 참조형 끼리의 대입은 Heap 영역에 존재하는 데이터를 참조하는 **참조자가 하나 더 늘어날 뿐**, 별도의 메모리가 추가로 할당도지 않음. 그래서 **둘 중 하나를 변경하면 다른 참조자는 같은 값을 참조하기 때문에 같이 변경됨** (해결을 위해 Deep Copy 진행)
 
 <br>
 
@@ -97,6 +99,35 @@ Test.b; // 클래스 변수 사용
    - **메소드 내에 선언되며 메소드 내에서만 사용 가능한 변수**
    - 메소드가 실행될 때, 메모리를 할당받으며 메소드가 끝나면 소멸되어 사용 불가
    - **Stack**에 저장됨
+
+<br>
+
+# 접근 제어 지시자
+
+- public : 어떤 클래스에서도 접근 가능, public 메소드는 private 멤버와 프로그램 사이의 인터페이스 역할을 수행하기도 함
+- protected : protected 멤버를 포함하는 클래스가 정의되어 있는 해당 패키지 내, 그리고 ***해당 클래스를 상속 받은 외부 패키지의 자식 클래스에서 접근 가능***
+- private : 해당 멤버를 선언한 클래스에서만 접근이 가능. public 메소드 (getter)를 이용한다면 해당 객체의 private 한 멤버에 접근이 가능
+- Default : 같은 클래스의 멤버와 해당 클래스가 정의되어 있는 ***패키지 내에서만 접근이 가능*** 
+
+### 참고
+
+1. private의 경우
+
+Private 멤버나 메소드를 가지고 있는 클래스를 A라고 하자.
+
+그리고 B라는 클래스가 A를 상속받는다. 이 경우, B 클래스는 private으로 선언된 멤버 혹은 메소드에 접근할 수 없다.
+
+따라서 상속을 받더라도 private한 멤버에는 접근이 불가능 하다.
+
+대신, public 메소드 통해 getter를 만들면 private 멤버를 사용할 수 있다.
+
+1. protected의 경우
+
+Protected 멤버나 메소드를 가지고 있는 클래스를 A라고 하자.
+
+마찬가지로 B라는 클래스가 A를 상속받는다. 이 경우, B 클래스는 protected로 선언된 멤버 혹은 메소드에 접근이 가능하다. B 라는 클래스가 다른 패키지에 선언되었을지라도 A 클래스의 멤버에 접근이 가능하다.
+
+하지만, 다른 패키지의 A 클래스를 상속받지 않은 클래스는 A 클래스의 멤버에 접근할 수 없다. 마치 private 처럼 말이다.
 
 <br>
 
@@ -228,4 +259,180 @@ void a(String c){
 | 메소드 이름    | ***상위 클래스의 메소드 이름과 동일*** | 자체적으로 동일 |
 | 매개변수, 타입 | 동일                                   | 다름            |
 | return 타입    | 동일                                   | 상관 없음       |
+
+<BR>
+
+# Abstract
+
+### 추상 클래스
+
+```java
+abstract class Car {
+    abstract void accelrate();
+}
+```
+
+- 미완성된 클래스
+- **추상 클래스는 미완성된 메소드인 추상 메소드를 포함**
+- **새로운 클래스를 작성하는데 있어 그 바탕이 되는 부모 클래스로서의 중요한 의미를 가짐**
+- 클래스 앞에 **abstract**를 붙임
+
+<br>
+
+### 목적
+
+- 기존의 클래스에서 공통된 부분을 추상화하여 상속하는 클래스에게 구현을 강제화 함
+- 메소드의 동작은 구현하는 **자식 클래스에게 위임**
+- 상속을 통해 기능을 확장시킴
+- ***공유의 목적으로 만들기도 함***
+
+<br>
+
+### 특징
+
+```java
+abstract class Animal {
+  abstract void cry();
+}
+
+class Cat extends Animal {
+  @Override
+  void cry(){
+    System.out.println("냐옹냐옹 ~~!");
+  }
+}
+
+class Dog extends Animal {
+  @Override
+  void cry(){
+    System.out.println("멍멍 ~~!");
+  }
+}
+
+public class Test{
+  public static void main(String[] args){
+    // Animal animal = new Animal();
+    // 추상 클래스는 자체적으로 인스턴스를 생성할 수 없다. 불완전하기 때문에.
+    
+    Cat cat = new Cat();
+    Dog dog = new Dog();
+    
+    cat.cry();
+    dog.cry();
+    
+  }
+}
+```
+
+- 추상 메소드 뿐 아니라, **일반 메소드, 멤버도 포함 가능**
+- 추상 메소드를 하나라도 포함호고 있다면 추상 클래스로 선언해야 함
+- 동작이 정의되어 있지 않은 **추상 메소드를 포함하고 있으므로 인스턴스 생성 불가**
+
+<br>
+
+### 추상 메소드
+
+- 선언부만 작성하고 구현부는 작성하지 않는 메소드이며, 앞에 abstract 키워드를 붙임
+- 구현부를 작성하지 않는 이유는 메소드의 내용이 상속받은 클래스에 따라 달라질 수 있기 때문
+- 사용하는 목적은 추상 메소드를 포함한 클래스를 **상속받는 자식 클래스가 반드시 추상 메소드를 구현하도록 강제하기 위함**
+- **추상 클래스를 상속받은 자식 클래스는 오버라이딩을 통해 부모인 추상 클래스의 <u>추상 메소드를 모두 구현</u>해야 함**
+- 만약, 자식 클래스에서 <u>추상 메소드를 하나라도 구현하지 않는다면 자식 클래스 역시 추상 클래스로 지정</u>
+
+# 인터페이스
+
+### 인터페이스
+
+```java
+interface 인터페이스 이름 {
+    public static final 타입 상수이름 = 값; 
+    public abstract 메소드이름(매개변수 목록); // 추상 메소드
+}
+```
+
+- 인터페이스는 인터페이스를 구현하는 모든 클래스에 대해 **특정한 메소드가 반드시 존재하도록 강제함**
+- 인터페이스의 목적은 **구현 객체가 같은 동작을 한다는 것을 보장하는 것**
+- 일종의 추상 클래스
+- 그러나 추상 클래스보다 추상화 정도가 높아서, 추상 메소드 이외의 일반 메소드나 멤버 변수를 구성원으로 가질 수 없음
+- **오직 추상 메소드와 상수만 멤버로 가질 수 있으며**, 그 외의 요소는 허용하지 않음
+- 추상 클래스를 부분적으로만 완성된 미완성 설계도라고 한다면, 인터페이스는 구현이 된 것이 아무것도 없는 기본 설계도
+
+<br>
+
+### 제약 사항
+
+```java
+interface CardGame {
+  public static final int NUMBER = 4;
+  
+  final int DIAMOND = 3;
+  static int HEART = 2;
+  int CLOVER = 1;
+  // 위의 상수는 모두 public static final이며, 생략된 형태이다.
+  
+  public abstract int getCardNumber();
+  
+  String getCardKind();
+  
+  // public 생략.
+  default void getNewCard() {
+    
+  }
+  
+  // public 생략.
+  static void staticMethod() {
+      
+  }
+}
+```
+
+- 모든 멤버 변수는 public static final, 생략 가능
+- 모든 메소드는 public abstract, 생략 가능
+- JDK 1.8부터 인터페이스에 static 메소드와 디폴트 메소드의 추가를 허용
+
+<br>
+
+### 인터페이스 상속
+
+```java
+interface Fightable extends Movable, Attackable {}
+
+interface Movable{ 
+	void move(int x,int y);
+}
+interface Attackable{ 
+	void attack(Unit u);
+}
+```
+
+- **인터페이스는 인터페이스로부터만 상속 가능**
+- **클래스와 달리 다중 상속 가능**
+- extends 사용
+
+<br>
+
+### 인터페이스 구현
+
+```java
+interface Fightable {
+    void move(int x, int y);
+    void attack(Unit u);
+}
+// Fighter 클래스는 Fightable 인터페이스를 구현했다.
+// 1. 추상 메소드를 모두 구현하는 경우
+class Fighter implements Fightable {	
+    public void move(int x, int y) { /* 내용 생략 */ }
+    public void attack(Unit u) { /* 내용 생략 */ }
+}
+
+// 2. 추상 메소드를 일부만 구현하는 경우 - 클래스 앞에 abstract를 붙여야 함
+abstract class Fighter implements Fightable {
+    public void move(int x, int y) { /* 내용 생략 */ }
+    //public abstract void attack(Unit u) // 보이지 않지만 상속의 결과로 생략되어 있는 것
+}
+```
+
+- 인터페이스에 정의된 추상 메소드를 완성하는 것
+- implements 사용
+
+
 
