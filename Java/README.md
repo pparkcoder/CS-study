@@ -1,4 +1,19 @@
-# int vs Integer
+# Wrapper Class
+
+### 사용 용도
+
+- 기본 자료형을 객체 타입의 자료형으로 변환이 필요할 때 사용
+- 매개변수로 객체가 요구될 경우 (ex. 제네릭, Collection 타입에서는 기본형을 쓸 수 없음)
+- 객체 간의 비교가 필요한 경우
+
+<BR>
+
+### 특징
+
+- Immutable(불변성)
+- 값에 대한 변경은 불가능하고, 새로운 값의 할당이나 참조만 가능
+- Boxding : 기본 자료형 -> Wrapper Class
+- UnBoxing : Wrapper Class -> 기본 자료형
 
 ### int
 
@@ -428,21 +443,22 @@ public class Test {
    - **객체와 배열을 저장하는 가상 메모리 공간**
    - **런타임시 동적으로 할당하여 사용하는 영역**
    - **GC의 관리 대상에 포함**
-   - <img src="https://user-images.githubusercontent.com/33534771/83472881-3f8cee00-a4c3-11ea-942c-9b7aa0f4ea04.png" style="zoom:200%;" />
-   
-     - New/Young 영역
-       - Eden : 객체들이 최초로 **생성되는 공간**
-       - Survivor : Eden에서 참조되는 객체들이 **저장되는 공간**
-     - Old 영역
-       - New 영역에서 일정 시간 참조되고 **살아남은 객체들이 저장되는 공간**
-       - Eden 영역에서 인스턴스(객체)가 가득차게 되면 첫 번째 GC가 발생 (**Minor GC)**
-       - Eden 영역에 있는 값들을 Survivor 1 영역에 복사하고, **이 영역을 제외한 나머지 영역의 객체를 삭제**
-       - **Eden 영역에서 GC가 한 번 발생한 후, 살아남은 객체는 Survivor 영역으로 이동. 이 과정을 반복하다가 살아남은 객체는 Old 영역으로 이동**
-     - Permanent 영역
-       - 생성된 객체들의 **주소값이 저장되는 공간**
-       - 리플렉션을 사용하여 동적으로 클래스가 로딩되는 경우 사용
-       - Old 영역에서 살아남은 객체가 영원히 남아있는 곳이 아님
-       - 이 영역에서 발생하는 GC는 Major GC의 횟수에 포함
+
+<img src="https://user-images.githubusercontent.com/33534771/83472881-3f8cee00-a4c3-11ea-942c-9b7aa0f4ea04.png" style="zoom:200%;" />
+
+- ​	New/Young 영역
+  - Eden : 객체들이 최초로 **생성되는 공간**
+  - Survivor : Eden에서 참조되는 객체들이 **저장되는 공간**
+- Old 영역
+  - New 영역에서 일정 시간 참조되고 **살아남은 객체들이 저장되는 공간**
+  - Eden 영역에서 인스턴스(객체)가 가득차게 되면 첫 번째 GC가 발생 (**Minor GC)**
+  - Eden 영역에 있는 값들을 Survivor 1 영역에 복사하고, **이 영역을 제외한 나머지 영역의 객체를 삭제**
+  - **Eden 영역에서 GC가 한 번 발생한 후, 살아남은 객체는 Survivor 영역으로 이동. 이 과정을 반복하다가 살아남은 객체는 Old 영역으로 이동**
+- Permanent 영역
+  - 생성된 객체들의 **주소값이 저장되는 공간**
+  - 리플렉션을 사용하여 동적으로 클래스가 로딩되는 경우 사용
+  - Old 영역에서 살아남은 객체가 영원히 남아있는 곳이 아님
+  - 이 영역에서 발생하는 GC는 Major GC의 횟수에 포함
 
 <BR>
 
@@ -514,9 +530,15 @@ public class MyThread extends Thread{
 
 <BR>
 
-# String
+# String 관련
 
-### 생성 방식
+### String
+
+- Immutable (불변성) 특징을 갖기 때문에, + 등 concat 연산 시 **원본을 변경하지 않고 새로운 String 객체를 생성**하므로 메모리 공간의 낭비가 발생
+- Immutable 객체 이기 때문에 멀티 스레드 환경에서 동기화를 신경쓰지 않아도 됨
+- 문자열 연산이 적고, 조회가 많은 상황에서 쓰기 좋음
+
+#### 생성 방식
 
 1. **new** 연산자를 이용한 방식
 2. 리터럴을 이용한 방식
@@ -541,4 +563,59 @@ public class StringMemory{
 -  equals() 메소드의 결과는 true : **equals() 메소드는 내용을 비교**하므로, 같은 문자열에 대해서는 true를 반환
 
 [참고](https://sabarada.tistory.com/137)
+
+<br>
+
+### StringBuilder vs StringBuffer
+
+- 공통점
+  - String과 다르게 **Mutable한 객체**
+  - 문자열 연산 시 새롭게 객체를 생성하지 않고, 처음에 만든 객체를 이용해 연산하고 크기를 변경시켜 문자열을 변경
+  - 문자열 연산이 자주 발생하는 상황에서 성능적으로 유리하며 쓰기 좋음
+- 차이점
+  - StringBuilder : Only 싱글 스레드, 비 동기식, StringBuffer보다 속도가 빠름
+  - StringBuffer : 멀티 스레드를 가능, 동기식
+  - 즉, **동기화 지원의 유무**
+
+<br>
+
+***String과 StirngBuild 속도차이 이유***
+
+반복문을 사용해서 문자열을 더할 경우 ***StringBuilder 객체를 매번 새로 생성하기 때문***. 따라서 반복문 안에서는 문자열 덧셈 연산을 하면 안됨
+
+<br>
+
+# final Keyword
+
+### final class
+
+- 다른 클래스에서 상속하지 못함
+- 클래스 내부의 메소드도 오버라이딩 불가
+- 대표적으로 ***String class***
+- 중요한 어떤 class에 대해 sub class로 시스템이 파괴될 수 있기 때문에, 자바에서는 핵심 class에 대해 final class로 선언
+
+### final method
+
+- 다른 메소드에서 **오버라이딩하지 못함**
+
+### final variable
+
+- **변하지 않는 상수값이 되어 새로 할당할 수 없는 변수가 됨**
+
+<br>
+
+### finally
+
+- try-catch 구문을 사용할 때, 정상적으로 작업을 한 경우와 에러가 발생했을 경우를 포함하여 마무리 해줘야하는 작업이 존재하는 경우에 해당하는 코드를 작성해주는 코드 블럭
+
+### finalize
+
+- keyword도 아니고 코드 블럭도 아닌 **메소드**
+- **GC에 의해 호출되는 함수로 절대 호출해서는 안 되는 함수**
+- Object 클래스에 정의되어 있음
+- finalize() 메소드가 오버라이딩 되어 있으면 GC가 이루어질 때 바로 GC가 되지 않음. 이로 인해 GC의 지연으로 OOME(Out of Memory Exception)이 발생할 수 있음
+
+
+
+
 
