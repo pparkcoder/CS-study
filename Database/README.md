@@ -121,3 +121,211 @@
 즉, 각 릴레이션의 입장에서 속성은 기본키가 되기도 하고, 외래키가 되기도 한다.
 
 -> [수강] 릴레이션의 **학번**에는 [학생] 릴레이션의 **학번**에 없는 값은 입력할 수 없다.
+
+<br>
+
+# 쿼리 관련
+
+[SQL문](https://github.com/pparkcoder/TechnicalNote/blob/master/database/DBQuery.md)
+
+[DDL, DML, DCL](https://github.com/pparkcoder/TechnicalNote/blob/master/database/DDLAndDMLAndDCL.md)
+
+# Index
+
+### Index란
+
+인덱스는 말 그대로 책의 맨 처음 또는 맨 마지막에 있는 색인. 데이터는 책의 내용이고, 데이터가 저장된 레코드의 주소는 인덱스 목록에 있는 페이지 번호가 될 것. DBMS도 데이터베이스 테이블의 모든 데이터를 검색해서 원하는 결과를 가져 오려면 시간이 오래 걸림. 그래서 컬럼의 값과 해당 레코드가 저장된 주소를 키와 값의 쌍으로 인덱스를 만들어 두는 것
+
+DBMS의 인덱스는 항상 정렬된 상태를 유지하기 때문에 원하는 값을 탐색하는데는 빠르지만, ***새로운 값을 추가하거나 삭제, 수정하는 경우에는 쿼리문 실행 속도가 느려짐***. 결론적으로 **DBMS에서 인덱스는 데이터의 저장 성능을 희생하고 그 대신 데이터의 읽기 속도를 높이는 기능**. SELECT 쿼리 문장의 WHERE 조건절에 사용되는 컬럼이라고 전부 인덱스로 생성하면 데이터 저장 성능이 떨어지고 인덱스의 크기가 비대해져서 오히려 역효과
+
+<BR>
+
+### Index의 성능과 고려해야 할 사항
+
+SELECT 쿼리의 성능을 월등히 향상시키는 인덱스는 항상 좋은 것인가? 쿼리문의 성능을 향상시킨다는데, 모든 컬럼에 인덱스를 생성해두면 빨라지지 않을까? **그렇지 않음**. 인덱스를 생성하게 되면 INSERT, DELETE, UPDATE 쿼리문을 실행할 때 별도의 과정이 추가적으로 발생.
+
+INSERT의 경우 인덱스에 대한 데이터도 추가해야 하므로 그만큼 성능에 손실이 따름.
+
+DELETE의 경우 인덱스에 존재하는 값은 삭제하지 않고 사용 안한다는 표시로 남게 됨. 즉 row의 수는 그대로임. 실제 데이터는 10만건인데, 데이터가 100만건이 있는 결과를 낳을 수 있음.
+
+UPDATE의 경우는 INSERT의 경우, DELETE의 경우의 문제점을 동시에 수반. 이전 데이터가 삭제되고 그 자리에 새 데이터가 들어오는 개념. 즉 변경 전 데이터는 삭제되지 않고 INSERT로 인한 split도 발생
+
+하지만 더 중요한 것은 컬럼을 이루고 있는 데이터의 형식에 따라서 인덱스의 성능이 악영향을 미칠 수 있다는 것. 즉, 데이터의 형식에 따라 인덱스를 만들면 효율적이고 만들면 비효율적인 데이터의 형식이 존재
+
+`이름,나이,성별` 세 가지 필드를 갖고 있는 테이블의 경우, 이름은 온갖 경우의 수가 존재할 것이며 나이는 INT 타입을 갖을 것이고, 성별은 `남,녀` 두 가지 경우에 대해서만 데이터가 존재할 것. 이 경우 어떤 컬럼에 대해서 인덱스를 생성하는 것이 효율적일까? 결론은 `이름`에 대해서만 인덱스를 생성하면 효율적. 10000 레코드에 해당하는 테이블에 대해서 2000 단위로 성별에 인덱스를 생성했다고 가정하면, 값의 range가 적은 성별은 인덱스를 읽고 다시 한 번 디스크 I/O가 발생하기 때문에 그만큼 비효율
+
+<BR>
+
+# JOIN
+
+### JOIN 이란
+
+- 두 개 이상의 테이블이나 데이터베이스를 연결하여 데이터를 검색하는 방법
+- 테이블을 연결하려면 **적어도 하나의 컬럼을 서로 공유하고 있어야** 하므로 이를 이용하여 데이터 검색에 활용
+
+<BR>
+
+### JOIN 종류
+
+1. **INNER JOIN**
+
+![](https://user-images.githubusercontent.com/33534771/75853566-c1706b00-5e31-11ea-83bc-1e2ebe4d9f61.png) 
+
+- 쉽게 말해 **교집합**
+
+- 기준 테이블과 JOIN 한 테이블의 **중복된 값**을 보여줌
+
+- 결과값은 A 테이블과 B 테이블 모두 가지고 있는 데이터만 검색
+
+- 표현 방법
+
+  - **EQUI JOIN (동등조인)**
+
+    - ```sql
+      SELECT *
+      FROM EMPLOYEE, DEPARTMENT
+      WHERE EMPLOYEE.DepartmentID = DEPARTMENT.DepartmentID
+      ```
+
+    - 연산자(=) 를 사용해서 EQUI JOIN 이라고 부름
+
+  - **명시적인 표현**
+
+    - ```SQL
+      SELECT *
+      FROM EMPLOYEE INNER JOIN DEPARTMENT
+      ON EMPLOYEE.DepartmentID = DEPARTMENT.DepartmentID
+      ```
+
+    - INNER JOIN 표시가 있다면 WHERE 절에서 사용하던 JOIN 조건을 FROM 절에 사용한다는 뜻
+
+    - **USING, ON 조건절을 필수로 사용**
+
+  - **USING 조건절**
+
+    - ```SQL
+      SELECT *
+      FROM EMP JOIN DEPT USING(DEPTNO)
+      ```
+
+    - 원하는 컬럼에 대해서만 선택적으로 EQUI JOIN
+
+    - ALIAS나 테이블 이름과 같은 접두사를 사용할 수 없음
+
+    - USING 조건에는 1개 이상의 컬럼을 정의할 수 있음
+
+  - **ON 조건절**
+
+    - ```SQL
+      SELCT T.TEAM_NAME, S.STADIUM_ID, S.STADIUM_NAME
+      FROM TEAM T JOIN STADIUM S
+      ON(T.STADIUM_ID = S.HOMETEAM_ID); -- STADIUM_ID와 HOMETEAM_ID는 같은 데이터이지만 컬럼 이름이 다름
+      ```
+
+    - **컬럼명이 다르더라도 JOIN 조건을 사용할 수 있음**
+
+    - 테이블이 많이 사용될 경우 가독성이 떨어질 수 있음
+
+  <BR>
+
+2. **OUTER JOIN**
+
+- JOIN 조건에서 **테이블간에 한 쪽에만 데이터가 있는 경우, 데이터가 있는 테이블 쪽의 모든 내용을 보여주는 것**
+
+- 조인 조건에 만족하지 않아도 해당 행을 출력하고 싶을 때 사용
+
+- **USING, ON 조건절을 필수적으로 사용**
+
+- **항상 기준이 되는 테이블이 드라이빙 테이블이 됨**. 드라이빙 테이블에 따라 쿼리의 성능이나 튜닝에 많은 영향을 끼치기 때문에 **데이터 양 보다는 적은 데이터를 추출하는 테이블을 드라이빙 테이블로 잡는 것이 중요**
+
+- 드라이빙 테이블 : JOIN이 발생했을 때 첫 번째로 ACCESS되는 테이블
+
+- 표현 방법
+
+  - **LEFT OUTER JOIN**
+
+    - ![](https://user-images.githubusercontent.com/33534771/75853627-e238c080-5e31-11ea-89bb-a5afe1058cfd.png) 
+
+    - 왼쪽 테이블을 기준으로 데이터 출력
+
+    - ```SQL
+      SELECT A.NAME, B.AGE
+      FROM EX_TABLE A
+      LEFT OUTER JOIN JOIN_TABLE B ON A.NO_EMP = B.NO_EMP
+      ```
+
+    - **결과값은 A 테이블의 모든 값과 A 테이블과 B 테이블의 중복되는 값이 검색**
+
+  - **RIGHT OUTER JOIN**
+
+    - ![](https://user-images.githubusercontent.com/33534771/75853699-f8468100-5e31-11ea-8c0f-5109f2852c59.png) 
+
+    - 오른쪽 테이블을 기준으로 데이터 출력
+
+    - ```SQL
+      SELECT A.NAME, B.AGE
+      FROM EX_TABLE A
+      RIGHT OUTER JOIN JOIN_TABLE B ON A.NO_EMP = B.NO_EMP
+      ```
+
+    - **결과값은 B 테이블의 모든 데이터와 A 테이블과 B 테이블의 중복되는 값이 검색**
+
+  - **FULL OUTER JOIN**
+
+    - ![](https://user-images.githubusercontent.com/33534771/75853732-072d3380-5e32-11ea-8cda-53eb71de966e.png) 
+
+    - 쉽게 말해 **합집합**
+
+    - 사실상, 기준 테이블의 의미가 없음
+
+    - ```SQL
+      SELECT A.NAME, B.AGE
+      FROM EX_TABLE A
+      FULL OUTER JOIN JOIN_TABLE B ON A.NO_EMP = B.NO_EMP
+      ```
+
+    -  **A 테이블이 가지고 있는 데이터, B 테이블이 가지고 있는 데이터 모두 검색됨**
+
+    - 중복되는 데이터는 삭제
+
+<BR>
+
+### CROSS JOIN , CROSS PRODUCT
+
+![](https://user-images.githubusercontent.com/33534771/75853764-16ac7c80-5e32-11ea-9942-04adab33ddb2.png) 
+
+- **모든 경우의 수를 전부 표현해주는 방식**
+- 기준 테이블이 A일 경우, A의 데이터 한 ROW를 B 테이블 전체와 JOIN 하는 방식
+- 결과값은 **N*M**
+
+```SQL
+-- 첫 번째 방식 --
+SELECT A.NAME, B.AGE
+FROM EX_TABLE A
+CROSS JOIN JOIN_TABLE B
+-- 두 번째 방식 --
+SELECT A.NAME, B.AGE
+FROM EX_TABLE A, JOIN_TABLE B
+```
+
+<BR>
+
+### SELF JOIN, 자가 JOIN
+
+![](https://user-images.githubusercontent.com/33534771/75853799-2926b600-5e32-11ea-94ce-4974aade41ca.png) 
+
+- 자기 자신과 자기 자신을 조인한다는 의미
+
+- 하나의 테이블을 여러번 복사해서 조인한다고 생각
+
+- 자신이 가지고 있는 컬럼을 다양하게 번형시켜 활용할 경우에 자주 사용
+
+- ```SQL
+  SELECT e.empno, e.ename, e.job, e.sal, m.empno, m.ename, m.job
+  FROM emp e INNER JOIN emp m ON e.mgr = m.empno
+  ```
+
+
+
+
+
